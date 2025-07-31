@@ -42,13 +42,13 @@ dependencies:
     sdk: flutter
 
   # For displaying Lottie animations.
-  lottie: ^3.3.1
+  lottie: ^3.1.1
 
 # ----------------- DEVELOPMENT DEPENDENCIES -----------------
 # These are packages that are only needed for development and testing.
 dev_dependencies:
   # Provides a set of recommended lints for Flutter apps, packages, and plugins.
-  build_runner: ^2.6.0
+  build_runner: ^2.4.13
   flutter_lints: ^4.0.0
   # The Flutter testing framework.
   flutter_test:
