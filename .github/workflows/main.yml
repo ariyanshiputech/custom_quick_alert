@@ -1,0 +1,197 @@
+name: Flutter CI
+
+# This workflow runs on every push to main and every pull request to main.
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+# Cancels in-progress runs on the same branch for new pushes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # This job is for static analysis and formatting checks.
+  analyze:
+    name: Analyze & Format
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.0"
+          channel: "stable"
+          cache: true
+
+      - name: 🔍 Verify Flutter Installation
+        run: flutter doctor -v
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      - name: "✨ Check Formatting"
+        run: "dart format --set-exit-if-changed ."
+      - name: 🔍 Analyze Code
+        run: flutter analyze --fatal-infos
+
+  # This job runs the tests for the package.
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: analyze
+    timeout-minutes: 15
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.0"
+          channel: "stable"
+          cache: true
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      - name: 🧪 Run Tests
+        run: flutter test --coverage --reporter=expanded
+
+      - name: 📊 Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage/lcov.info
+          fail_ci_if_error: false
+
+  # This job builds the example app on all supported platforms.
+  build:
+    name: Build ${{ matrix.target }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    needs: test
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Android builds
+          - os: ubuntu-latest
+            target: android
+            build_cmd: flutter build apk --release
+
+          # iOS builds
+          - os: macos-latest
+            target: ios
+            build_cmd: flutter build ios --release --no-codesign
+
+          # Web builds
+          - os: ubuntu-latest
+            target: web
+            build_cmd: flutter build web --release
+
+          # Desktop builds
+          - os: ubuntu-latest
+            target: linux
+            build_cmd: flutter build linux --release
+
+          - os: macos-latest
+            target: macos
+            build_cmd: flutter build macos --release
+
+          - os: windows-latest
+            target: windows
+            build_cmd: flutter build windows --release
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.0"
+          channel: "stable"
+          cache: true
+
+      # Linux desktop dependencies
+      - name: 🐧 Install Linux Dependencies
+        if: matrix.target == 'linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build libgtk-3-dev libblkid-dev liblzma-dev
+
+      # Android setup
+      - name: 🤖 Setup Java for Android
+        if: matrix.target == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: 🤖 Setup Android SDK
+        if: matrix.target == 'android'
+        uses: android-actions/setup-android@v3
+
+      # Install dependencies for main package
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      # Install dependencies for example app
+      - name: 📦 Install Example Dependencies
+        run: flutter pub get
+        working-directory: example
+
+      # Enable platform if not enabled
+      - name: 🔧 Enable ${{ matrix.target }} Platform
+        if: matrix.target == 'linux' || matrix.target == 'macos' || matrix.target == 'windows'
+        run: flutter config --enable-${{ matrix.target }}-desktop
+        working-directory: example
+
+      # Build the example app
+      - name: 🔨 Build ${{ matrix.target }}
+        run: ${{ matrix.build_cmd }}
+        working-directory: example
+
+      # Upload build artifacts
+      - name: 📤 Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: ${{ matrix.target }}-build-${{ github.sha }}
+          path: |
+            example/build/**/*
+          retention-days: 7
+
+  build_example_package:
+    name: Build Example Package
+    runs-on: ubuntu-latest
+    needs: analyze
+    timeout-minutes: 10
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.0"
+          channel: "stable"
+          cache: true
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      - name: 🔍 Check Package
+        run: flutter pub publish --dry-run
+
+      - name: 📊 Check Package Score
+        run: dart pub global activate pana && pana --json --no-warning

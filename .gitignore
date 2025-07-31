@@ -1,0 +1,59 @@
+# Flutter/Dart related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.vscode/launch.json
+
+# AOT builds
+/build/
+
+# Android related
+/android/.gradle
+/android/captures
+/android/gradlew
+/android/gradlew.bat
+/android/local.properties
+/android/*.jks
+/android/*.p12
+/android/*.keystore
+
+# iOS related
+/ios/.bundle/
+/ios/.symlinks/
+/ios/Flutter/App.framework/
+/ios/Flutter/App.framework.zip
+/ios/Flutter/Flutter.framework/
+/ios/Flutter/Flutter.framework.zip
+/ios/Flutter/flutter_assets/
+/ios/Pods/
+
+# VS Code
+.vscode/
+.code-workspace
+# IntelliJ related
+.idea/
+*.iml
+
+
+# IntelliJ
+.idea/
+*.iml
+
+# Xcode
+*.xcodeproj/project.xcworkspace/
+*.xcworkspace/contents.xcworkspacedata
+*.xcworkspace/xcuserdata/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Linux
+*~
+
+# misc
+*.log
+*.stackdump
