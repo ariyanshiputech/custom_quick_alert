@@ -63,7 +63,7 @@ jobs:
         run: flutter pub get
 
       - name: 🧪 Run Tests
-        run: flutter test --coverage --reporter=expanded
+        run: flutter test --converage
 
       - name: 📊 Upload Coverage to Codecov
         uses: codecov/codecov-action@v3
