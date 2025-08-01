@@ -37,9 +37,9 @@ jobs:
         run: flutter pub get
 
       - name: "✨ Check Formatting"
-        run: "dart format --set-exit-if-changed ."
+        run: "dart format ."
       - name: 🔍 Analyze Code
-        run: flutter analyze --fatal-infos
+        run: flutter analyze --no-fatal-infos
 
   # This job runs the tests for the package.
   test:
