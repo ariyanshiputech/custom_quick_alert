@@ -1,6 +1,6 @@
 name: custom_quick_alert
 description: Instantly display animated alert dialogs like success, error, warning, confirm, loading, or custom — all with minimal code.
-version: 2.0.0
+version: 2.0.1
 license: MIT
 homepage: https://github.com/ariyanshiputech/custom_quick_alert
 repository: https://github.com/ariyanshiputech/custom_quick_alert
