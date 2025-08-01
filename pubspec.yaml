@@ -32,7 +32,7 @@ screenshots: # Each item is a screenshot that appears on your pub.dev page.
 # Specifies the versions of Dart and Flutter that your package supports.
 environment:
   sdk: ">=3.4.0 <4.0.0"
-  flutter: ">=3.24.0 <4.0.0"
+  flutter: ">=3.24.0"
 
 # ----------------- DEPENDENCIES -----------------
 # These are packages that your package needs to work.

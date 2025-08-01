@@ -66,10 +66,10 @@ jobs:
         run: flutter test --coverage --reporter=expanded
 
       - name: 📊 Upload Coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
-          file: coverage/lcov.info
-          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: ariyanshiputech/custom_quick_alert
 
   # This job builds the example app on all supported platforms.
   build:
