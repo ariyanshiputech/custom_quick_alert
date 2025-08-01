@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:custom_quick_alert/custom_quick_alert.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = customQuickAlertNavigatorKey;
 
 void main() {
@@ -58,9 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
         CustomQuickAlert.success(
           title: 'Success',
           message: 'Transaction Completed Successfully!',
-          onConfirm: () { 
-            
-          },
+          onConfirm: () {},
         );
       },
       title: 'Success',

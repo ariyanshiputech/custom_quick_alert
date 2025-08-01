@@ -569,4 +569,3 @@ class CustomQuickAlertPage {
     );
   }
 }
-

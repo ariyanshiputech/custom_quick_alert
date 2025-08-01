@@ -16,7 +16,10 @@ class CustomQuickAlertLoader {
     CustomQuickAlertType type = CustomQuickAlertType.loading,
     String? lottieAsset,
     Color? backgroundColor,
-    double? borderRadius, double? width, double? height, EdgeInsets? padding,
+    double? borderRadius,
+    double? width,
+    double? height,
+    EdgeInsets? padding,
   }) {
     if (customQuickAlertNavigatorKey.currentState == null) {
       debugPrint(
