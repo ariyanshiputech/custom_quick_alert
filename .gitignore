@@ -30,7 +30,8 @@
 
 # VS Code
 .vscode/
-.code-workspace
+*.code-snippets
+*.code-workspace
 # IntelliJ related
 .idea/
 *.iml
