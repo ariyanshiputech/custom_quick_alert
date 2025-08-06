@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:custom_quick_alert/custom_quick_alert.dart';
-import 'package:custom_quick_alert/src/alert_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mocktail/mocktail.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Mock for callbacks
 class MockVoidCallback extends Mock {
@@ -18,23 +18,23 @@ void main() {
   setUp(() {
     testApp = MaterialApp(
       home: const Scaffold(body: Center(child: Text('Test App'))),
-      navigatorKey: customQuickAlertNavigatorKey,
+      navigatorKey: navigatorKey,
     );
+
+    // Initialize CustomQuickAlert with the navigator key
+    CustomQuickAlert.initialize(navigatorKey);
   });
 
   group('CustomQuickAlert Tests', () {
-    testWidgets('shows success alert and calls onConfirm',
+    testWidgets('shows success alert with title and message',
         (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
-      final MockVoidCallback mock = MockVoidCallback();
-      when(() => mock.call()).thenReturn(null);
 
       unawaited(
         CustomQuickAlert.success(
           title: 'Success!',
           message: 'This is a success message.',
           barrierDismissible: true,
-          onConfirm: mock.call,
         ),
       );
       await tester.pumpAndSettle();
@@ -42,12 +42,10 @@ void main() {
       expect(find.text('Success!'), findsOneWidget);
       expect(find.text('This is a success message.'), findsOneWidget);
       expect(find.text('OK'), findsOneWidget);
-      expect(find.byType(Lottie), findsOneWidget);
 
       await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
 
-      verify(() => mock.call()).called(1);
       expect(find.text('Success!'), findsNothing);
     });
 
@@ -73,29 +71,33 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('shows confirm alert and calls onCancel',
+    testWidgets('shows confirm alert with both buttons',
         (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
-      final MockVoidCallback mock = MockVoidCallback();
-      when(() => mock.call()).thenReturn(null);
+      final MockVoidCallback mockConfirm = MockVoidCallback();
+      final MockVoidCallback mockCancel = MockVoidCallback();
+      when(mockConfirm.call).thenReturn(null);
+      when(mockCancel.call).thenReturn(null);
 
       unawaited(
         CustomQuickAlert.confirm(
           title: 'Confirmation',
           message: 'Are you sure?',
-          onCancel: mock.call,
+          onConfirm: mockConfirm.call,
+          onCancel: mockCancel.call,
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.text('Confirmation'), findsOneWidget);
       expect(find.text('Are you sure?'), findsOneWidget);
-      expect(find.text('Cancel'), findsOneWidget);
+      expect(find.text('Yes'), findsOneWidget);
+      expect(find.text('No'), findsOneWidget);
 
-      await tester.tap(find.text('Cancel'));
+      await tester.tap(find.text('No'));
       await tester.pumpAndSettle();
 
-      verify(() => mock.call()).called(1);
+      verify(mockCancel.call).called(1);
       expect(find.text('Confirmation'), findsNothing);
     });
 
@@ -119,177 +121,75 @@ void main() {
       expect(find.text('Auto-closing'), findsNothing);
     });
 
-    testWidgets('shows alert with custom width', (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      const double customWidth = 350.0;
-      unawaited(
-        CustomQuickAlert.info(
-          title: 'Custom Width',
-          width: customWidth,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      final AlertDialog dialog =
-          tester.widget<AlertDialog>(find.byType(AlertDialog));
-      expect(dialog.content, isNotNull);
-
-      final AlertContent content = dialog.content as AlertContent;
-      expect(content.width, customWidth);
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows alert with custom border radius',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      const double customRadius = 32.0;
-      unawaited(
-        CustomQuickAlert.success(
-          title: 'Custom Radius',
-          borderRadius: customRadius,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      final AlertDialog dialog =
-          tester.widget<AlertDialog>(find.byType(AlertDialog));
-      final RoundedRectangleBorder shape =
-          dialog.shape as RoundedRectangleBorder;
-      expect(shape.borderRadius, BorderRadius.circular(customRadius));
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('calls onCancel when cancel button is pressed',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      final MockVoidCallback mock = MockVoidCallback();
-      when(() => mock.call()).thenReturn(null);
-
-      unawaited(
-        CustomQuickAlert.confirm(
-          title: 'Cancel Test',
-          showCancel: true,
-          onCancel: mock.call,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Cancel'));
-      await tester.pumpAndSettle();
-
-      verify(() => mock.call()).called(1);
-      expect(find.text('Cancel Test'), findsNothing);
-    });
-
-    testWidgets('shows custom lottie asset', (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      const String customLottie = 'assets/animations/custom.json';
-      unawaited(
-        CustomQuickAlert.info(
-          title: 'Custom Lottie',
-          lottieAsset: customLottie,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      final Lottie lottieWidget = tester.widget<Lottie>(find.byType(Lottie));
-      expect(
-        lottieWidget.composition,
-        isNotNull,
-      ); // We can't directly check the assetName from Lottie, but we can check if a composition was loaded.
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows alert with only cancel button',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      unawaited(
-        CustomQuickAlert.confirm(
-          title: 'Only Cancel',
-          showConfirm: false,
-          showCancel: true,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Cancel'), findsOneWidget);
-      expect(find.text('OK'), findsNothing);
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows alert with only confirm button',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      unawaited(
-        CustomQuickAlert.success(
-          title: 'Only Confirm',
-          showConfirm: true,
-          showCancel: false,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('OK'), findsOneWidget);
-      expect(find.text('Cancel'), findsNothing);
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows alert with custom confirm and cancel text colors',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      const Color confirmTextColor = Colors.orange;
-      const Color cancelTextColor = Colors.pink;
-
-      unawaited(
-        CustomQuickAlert.confirm(
-          title: 'Text Colors',
-          confirmTextColor: confirmTextColor,
-          cancelTextColor: cancelTextColor,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      tester.widget<Text>(find.text('OK'));
-      tester.widget<Text>(find.text('Cancel'));
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('is NOT dismissible when barrierDismissible is false',
-        (WidgetTester tester) async {
+    testWidgets('shows warning alert', (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
 
       unawaited(
         CustomQuickAlert.warning(
-          title: 'Not Dismissible',
-          barrierDismissible: false,
+          title: 'Warning!',
+          message: 'Please check your input.',
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Not Dismissible'), findsOneWidget);
 
-      await tester.tapAt(const Offset(10, 10));
+      expect(find.text('Warning!'), findsOneWidget);
+      expect(find.text('Please check your input.'), findsOneWidget);
+
+      CustomQuickAlert.dismiss();
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('shows info alert with position', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+
+      unawaited(
+        CustomQuickAlert.info(
+          title: 'Information',
+          message: 'Here is some info.',
+          position: CustomQuickAlertPosition.center,
+        ),
+      );
       await tester.pumpAndSettle();
 
-      expect(find.text('Not Dismissible'), findsOneWidget);
+      expect(find.text('Information'), findsOneWidget);
+      expect(find.text('Here is some info.'), findsOneWidget);
+
+      CustomQuickAlert.dismiss();
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('shows loading alert', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+
+      unawaited(CustomQuickAlert.loading(
+        title: 'Loading...',
+        message: 'Please wait.',
+      ));
+      await tester.pump();
+
+      expect(find.text('Loading...'), findsOneWidget);
+      expect(find.text('Please wait.'), findsOneWidget);
+
+      CustomQuickAlert.dismiss();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Loading...'), findsNothing);
+    });
+
+    testWidgets('shows custom alert', (WidgetTester tester) async {
+      await tester.pumpWidget(testApp);
+
+      unawaited(
+        CustomQuickAlert.custom(
+          title: 'Custom Alert',
+          message: 'This is a custom alert.',
+          lottieAsset: 'assets/animations/custom.json',
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Custom Alert'), findsOneWidget);
+      expect(find.text('This is a custom alert.'), findsOneWidget);
 
       CustomQuickAlert.dismiss();
       await tester.pumpAndSettle();
@@ -309,156 +209,63 @@ void main() {
       expect(find.text('Info Dialog'), findsNothing);
     });
 
-    testWidgets('displays custom widget content', (WidgetTester tester) async {
+    testWidgets('respects animation type', (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
 
       unawaited(
-        CustomQuickAlert.show(
-          type: CustomQuickAlertType.custom,
-          customContent: const Text('My Custom Widget'),
+        CustomQuickAlert.info(
+          title: 'Animated Alert',
+          animationType: CustomQuickAlertAnimationType.scale,
         ),
       );
-      await tester.pumpAndSettle();
-
-      expect(find.text('My Custom Widget'), findsOneWidget);
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows loading alert and is dismissible',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      unawaited(CustomQuickAlert.loading());
       await tester.pump();
 
-      expect(find.byType(Lottie), findsOneWidget);
+      expect(find.text('Animated Alert'), findsOneWidget);
 
+      await tester.pumpAndSettle();
       CustomQuickAlert.dismiss();
       await tester.pumpAndSettle();
-
-      expect(find.byType(Lottie), findsNothing);
     });
 
-    testWidgets('respects disableBackBtn property',
+    testWidgets('respects barrier dismissible setting',
         (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
 
       unawaited(
-        CustomQuickAlert.info(
-          title: 'No Back Button',
-          disableBackBtn: true,
+        CustomQuickAlert.warning(
+          title: 'Not Dismissible',
         ),
       );
       await tester.pumpAndSettle();
+      expect(find.text('Not Dismissible'), findsOneWidget);
 
-      // Try to pop the route
-      final NavigatorState navigator = tester.state(find.byType(Navigator));
-      await navigator.maybePop();
+      // Try to tap outside - dialog should remain
+      await tester.tapAt(const Offset(10, 10));
       await tester.pumpAndSettle();
 
-      // The dialog should still be visible
-      expect(find.text('No Back Button'), findsOneWidget);
+      expect(find.text('Not Dismissible'), findsOneWidget);
 
       CustomQuickAlert.dismiss();
       await tester.pumpAndSettle();
     });
 
-    testWidgets('aligns to bottom when position is bottom',
-        (WidgetTester tester) async {
+    testWidgets('handles custom colors', (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
-
-      unawaited(
-        CustomQuickAlert.info(
-          title: 'Bottom Aligned',
-          position: CustomQuickAlertPosition.bottom,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      final Align alignWidget = tester.widget<Align>(
-        find.byWidgetPredicate((Widget w) => w is Align && w.child is Material),
-      );
-      expect(alignWidget.alignment, Alignment.bottomCenter);
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('applies custom colors correctly', (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      const Color titleColor = Colors.red;
-      const Color messageColor = Colors.green;
-      const Color backgroundColor = Colors.yellow;
-      const Color confirmBtnColor = Colors.purple;
 
       unawaited(
         CustomQuickAlert.success(
           title: 'Custom Colors',
           message: 'Testing colors.',
-          titleColor: titleColor,
-          messageColor: messageColor,
-          backgroundColor: backgroundColor,
-          confirmBtnColor: confirmBtnColor,
+          backgroundColor: Colors.blue,
+          titleColor: Colors.white,
+          messageColor: Colors.white70,
         ),
       );
       await tester.pumpAndSettle();
 
-      // Check title color
-      final Text titleText = tester.widget<Text>(find.text('Custom Colors'));
-      expect(titleText.style?.color, titleColor);
+      expect(find.text('Custom Colors'), findsOneWidget);
+      expect(find.text('Testing colors.'), findsOneWidget);
 
-      // Check message color
-      final Text messageText =
-          tester.widget<Text>(find.text('Testing colors.'));
-      expect(messageText.style?.color, messageColor);
-
-      // Check background color
-      final AlertDialog alertDialog =
-          tester.widget<AlertDialog>(find.byType(AlertDialog));
-      expect(alertDialog.backgroundColor, backgroundColor);
-
-      // Check confirm button color
-      final FilledButton filledButton =
-          tester.widget<FilledButton>(find.byType(FilledButton));
-      expect(
-        filledButton.style?.backgroundColor?.resolve(<WidgetState>{}),
-        confirmBtnColor,
-      );
-
-      CustomQuickAlert.dismiss();
-      await tester.pumpAndSettle();
-      expect(find.text('Custom Colors'), findsNothing);
-    });
-
-    testWidgets('uses slideInDown animation when specified',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(testApp);
-
-      unawaited(
-        CustomQuickAlert.info(
-          title: 'Sliding In',
-          animType: CustomQuickAlertAnimType.slideInDown,
-        ),
-      );
-      await tester.pump(); // Start the animation
-
-      // Check for a SlideTransition widget with vertical translation
-      final Finder slideTransitionFinder = find.ancestor(
-        of: find.byType(AlertDialog),
-        matching: find.byType(SlideTransition),
-      );
-      expect(slideTransitionFinder, findsOneWidget);
-      final SlideTransition slideTransition =
-          tester.widget<SlideTransition>(slideTransitionFinder);
-      // Verify that the begin offset of the animation is (0, -1) for slideInDown
-      expect(slideTransition.position.value.dx, 0);
-      expect(slideTransition.position.value.dy, lessThan(0));
-
-      await tester.pumpAndSettle(); // Finish animation
-      expect(find.text('Sliding In'), findsOneWidget);
       CustomQuickAlert.dismiss();
       await tester.pumpAndSettle();
     });

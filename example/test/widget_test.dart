@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:custom_quick_alert/custom_quick_alert.dart';
+import 'package:flutter/material.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = customQuickAlertNavigatorKey;
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +23,6 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blue,
-          brightness: Brightness.light,
         ),
         useMaterial3: true,
         fontFamily: 'Roboto',
@@ -105,8 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
         CustomQuickAlert.confirm(
           title: 'Confirm',
           message: 'Do you want to logout?',
-          confirmText: 'Yes',
-          cancelText: 'No',
           onConfirm: () {
             // You can add your own logic here for the confirm action.
           },
@@ -121,9 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     final Card loadingAlert = buildButton(
-      onTap: () {
-        CustomQuickAlert.loading();
-      },
+      onTap: CustomQuickAlert.loading,
       title: 'Loading',
       text: 'Fetching your data',
       leadingImage: 'assets/icons/loading.png',

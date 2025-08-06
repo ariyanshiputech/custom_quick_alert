@@ -1,13 +1,16 @@
-library;
-
-// Core components
+// Core
 export 'src/custom_quick_alert.dart';
+// Enums
 export 'src/enums/custom_quick_alert_animation_type.dart';
 export 'src/enums/custom_quick_alert_position.dart';
-export 'src/enums/custom_quick_alert_type.dart';
-
+export 'src/enums/custom_quick_alert_types.dart';
+// Models
+export 'src/models/custom_quick_alert_config.dart';
+export 'src/models/custom_quick_alert_theme.dart';
 // Utils
-export 'src/utils/alignment_helper.dart';
-export 'src/utils/custom_quick_alert_assets.dart';
-export 'src/utils/custom_quick_alert_button.dart';
-export 'src/utils/default_lottie_helper.dart';
+export 'src/utils/custom_quick_alert_animation_helper.dart';
+export 'src/utils/custom_quick_alert_asset_helper.dart';
+export 'src/utils/custom_quick_alert_position_helper.dart';
+// Widgets
+export 'src/widgets/custom_quick_alert_button.dart';
+export 'src/widgets/custom_quick_alert_dialog_widget.dart';

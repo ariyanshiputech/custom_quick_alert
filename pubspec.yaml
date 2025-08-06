@@ -1,6 +1,6 @@
 name: custom_quick_alert
-description: Instantly display animated alert dialogs like success, error, warning, confirm, loading, or custom — all with minimal code.
-version: 2.0.1
+description: Enterprise-grade alert dialogs for Flutter with professional UI, gradient buttons, Lottie animations, and context-free usage. Material Design 3 compliant.
+version: 2.1.0
 license: MIT
 homepage: https://github.com/ariyanshiputech/custom_quick_alert
 repository: https://github.com/ariyanshiputech/custom_quick_alert
@@ -12,6 +12,11 @@ topics:
   - popup
   - animation
   - lottie
+  - material-design
+  - professional
+  - enterprise
+  - gradient
+  - context-free
 
 screenshots: # Each item is a screenshot that appears on your pub.dev page.
   - description: "An example of the success alert dialog."
@@ -47,13 +52,12 @@ dependencies:
 # ----------------- DEVELOPMENT DEPENDENCIES -----------------
 # These are packages that are only needed for development and testing.
 dev_dependencies:
-  # Provides a set of recommended lints for Flutter apps, packages, and plugins.
   build_runner: ^2.4.13
-  flutter_lints: ^4.0.0
-  # The Flutter testing framework.
   flutter_test:
     sdk: flutter
+  # Provides a set of recommended lints for Flutter apps, packages, and plugins.
   mocktail: ^1.0.3
+  very_good_analysis: ^9.0.0
   # For generating code, such as mocks.
 flutter:
   uses-material-design: true

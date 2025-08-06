@@ -19,7 +19,7 @@ dependencies:
     path: ..
   flutter:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
   path: ^1.9.0
   path_provider: ^2.1.5
 
@@ -29,6 +29,7 @@ dev_dependencies:
   # `analysis_options.yaml` file located at the root of your package.
   flutter_test:
     sdk: flutter
+  very_good_analysis: ^9.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

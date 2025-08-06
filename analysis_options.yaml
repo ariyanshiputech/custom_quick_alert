@@ -1,27 +1,87 @@
-include: package:flutter_lints/flutter.yaml
+# Professional Flutter & Dart Analysis Options
+# Author: Ariyan Shipu (ariyanshipu.me)
+# Based on: very_good_analysis + flutter_lints + custom pro rules
+
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  language:
+    strict-inference: true
+    strict-raw-types: true
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "**/*.gen.dart"
+    - "**/*.config.dart"
+    - "**/*.mocks.dart"
+    - "**/*.iconfig.dart"
+    - "**/generated_plugin_registrant.dart"
+    - "**/test/**.mocks.dart"
+    - "**/test/**.config.dart"
+  errors:
+    unused_import: warning
+    unused_element: warning
+    dead_code: warning
+    invalid_assignment: error
+    missing_required_param: error
+    missing_return: error
+    parameter_assignments: error
+    non_constant_identifier_names: ignore
+    todo: ignore
 
 linter:
   rules:
-    # ===== Style Rules =====
-    # Use these rules to enforce a consistent code style.
-    - always_specify_types
-    - prefer_final_locals
-    - prefer_const_constructors
-    - sort_pub_dependencies
-    - unawaited_futures
-    - unnecessary_parenthesis
-    - require_trailing_commas
+    # === General Best Practices ===
+    always_declare_return_types: true
+    avoid_dynamic_calls: true
+    prefer_final_fields: true
+    unnecessary_this: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_single_quotes: true
+    directives_ordering: true
+    use_setters_to_change_properties: false
+    # === Naming Conventions ===
+    camel_case_extensions: true
+    constant_identifier_names: true  # allow UPPER_SNAKE_CASE
+    library_prefixes: true
+    file_names: true
+    prefer_adjacent_string_concatenation: true
 
-analyzer:
-  errors:
-    # Treat these issues as errors to ensure they are fixed.
-    missing_required_param: error
-    missing_return: error
+    # === Performance ===
+    avoid_unnecessary_containers: true
+    prefer_relative_imports: false
+    use_key_in_widget_constructors: true
+    unnecessary_lambdas: true
+    unnecessary_parenthesis: true
+
+    # === Code Cleanliness ===
+    avoid_print: true
+    avoid_empty_else: true
+    avoid_redundant_argument_values: true
+    avoid_classes_with_only_static_members: false
+    omit_local_variable_types: false
+    unnecessary_null_checks: true
+    depend_on_referenced_packages: true
+    lines_longer_than_80_chars: false
     
-  exclude:
-    # Exclude generated files from analysis.
-    - "**/*.g.dart"
-    - "**/*.freezed.dart"
+    # === Error Prevention ===
+    no_logic_in_create_state: true
+    always_put_required_named_parameters_first: true
+    always_put_control_body_on_new_line: true
+    avoid_init_to_null: true
+    avoid_returning_null_for_future: true
+    avoid_slow_async_io: true
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+    # === Comments & Docs ===
+    public_member_api_docs: false
+    slash_for_doc_comments: true
+
+    # === Flutter Specific ===
+    use_full_hex_values_for_flutter_colors: true
+    sized_box_for_whitespace: true
+    use_super_parameters: true
