@@ -295,7 +295,7 @@ jobs:
 
       # Upload build artifacts
       - name: 📤 Upload Build Artifacts
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: success()
         with:
           name: ${{ matrix.target }}-build-${{ github.run_number }}
@@ -347,7 +347,7 @@ jobs:
           fi
 
       - name: 📤 Upload Pana Report
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: pana-report-${{ github.run_number }}
@@ -407,7 +407,7 @@ jobs:
           fi
 
       - name: �📤 Upload Security Reports
-        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:
           name: security-reports-${{ github.run_number }}
