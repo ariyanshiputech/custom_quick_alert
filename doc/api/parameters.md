@@ -1,6 +1,6 @@
 # 📱 API Parameters Reference
 
-Complete reference for all parameters available in Custom Quick Alert v2.1.0.
+Complete reference for all parameters available in Custom Quick Alert v2.1.1.
 
 ## 🎯 Alert Methods
 

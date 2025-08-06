@@ -17,7 +17,7 @@ Add `custom_quick_alert` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  custom_quick_alert: ^2.1.0
+  custom_quick_alert: ^2.1.1
 ```
 
 ### 2. Install Package

@@ -1,6 +1,6 @@
 # 📚 Custom Quick Alert Documentation Wiki
 
-Welcome to the comprehensive documentation for Custom Quick Alert v2.1.0! This wiki provides detailed guides, tutorials, and best practices for using the package effectively.
+Welcome to the comprehensive documentation for Custom Quick Alert v2.1.1! This wiki provides detailed guides, tutorials, and best practices for using the package effectively.
 
 ## 📖 Table of Contents
 
@@ -103,7 +103,7 @@ Found an error or want to improve the docs? We welcome contributions!
 
 | Property | Value |
 |----------|-------|
-| **Current Version** | 2.1.0 |
+| **Current Version** | 2.1.1 |
 | **Platform Support** | iOS, Android, Web, Desktop |
 | **Flutter Version** | 3.24.0+ |
 | **Dart Version** | 3.4.0+ |
@@ -122,7 +122,7 @@ Found an error or want to improve the docs? We welcome contributions!
 - [🐛 Report Issues](https://github.com/ariyanshiputech/custom_quick_alert/issues)
 - [💬 Discussions](https://github.com/ariyanshiputech/custom_quick_alert/discussions)
 
-## 🚀 Current Features (v2.1.0)
+## 🚀 Current Features (v2.1.1)
 
 ### 🎯 **Core Capabilities**
 - ✅ **Context-Free API** - No BuildContext required

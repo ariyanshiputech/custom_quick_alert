@@ -1,6 +1,6 @@
 # 📐 Enums Reference
 
-Complete reference for all enums available in Custom Quick Alert v2.1.0.
+Complete reference for all enums available in Custom Quick Alert v2.1.1.
 
 ## 🎯 CustomQuickAlertType
 

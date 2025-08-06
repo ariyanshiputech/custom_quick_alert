@@ -1,12 +1,12 @@
-# 📚 Migration Guide - v2.1.0
+# 📚 Migration Guide - v2.1.1
 
-Complete guide for migrating to Custom Quick Alert v2.1.0 with the new context-free API.
+Complete guide for migrating to Custom Quick Alert v2.1.1 with the new context-free API.
 
-## 🔄 Upgrading from v1.x to v2.1.0
+## 🔄 Upgrading from v1.x to v2.1.1
 
 ### 🚨 Breaking Changes
 
-Version 2.1.0 introduces a completely new context-free API that eliminates the need for `BuildContext` parameters.
+Version 2.1.1 introduces a completely new context-free API that eliminates the need for `BuildContext` parameters.
 
 ### 📋 Migration Steps
 
@@ -15,7 +15,7 @@ Version 2.1.0 introduces a completely new context-free API that eliminates the n
 **Update your `pubspec.yaml`:**
 ```yaml
 dependencies:
-  custom_quick_alert: ^2.1.0  # Update to latest version
+  custom_quick_alert: ^2.1.1  # Update to latest version
 ```
 
 **Run package update:**
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
 
 **Migration Table:**
 
-| v1.x API | v2.1.0 API |
+| v1.x API | v2.1.1 API |
 |----------|------------|
 | `CustomQuickAlert.show(context: context, type: QuickAlertType.success, ...)` | `CustomQuickAlert.success(...)` |
 | `CustomQuickAlert.show(context: context, type: QuickAlertType.error, ...)` | `CustomQuickAlert.error(...)` |
@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
 
 **Key Parameter Updates:**
 
-| v1.x Parameter | v2.1.0 Parameter | Notes |
+| v1.x Parameter | v2.1.1 Parameter | Notes |
 |----------------|------------------|-------|
 | `text` | `message` | Renamed for clarity |
 | `context` | *(removed)* | No longer needed with global navigator |
@@ -104,7 +104,7 @@ void showSuccessAlert(BuildContext context) {
 }
 ```
 
-**After (v2.1.0):**
+**After (v2.1.1):**
 ```dart
 void showSuccessAlert() {
   CustomQuickAlert.success(
@@ -137,7 +137,7 @@ void showErrorAlert(BuildContext context, String error) {
 }
 ```
 
-**After (v2.1.0):**
+**After (v2.1.1):**
 ```dart
 void showErrorAlert(String error) {
   CustomQuickAlert.error(
@@ -173,7 +173,7 @@ void showConfirmDialog(BuildContext context) {
 }
 ```
 
-**After (v2.1.0):**
+**After (v2.1.1):**
 ```dart
 void showConfirmDialog() {
   CustomQuickAlert.confirm(
@@ -210,7 +210,7 @@ void showLoadingAlert(BuildContext context) {
 }
 ```
 
-**After (v2.1.0):**
+**After (v2.1.1):**
 ```dart
 void showLoadingAlert() {
   CustomQuickAlert.loading(
@@ -244,7 +244,7 @@ void showCustomAlert(BuildContext context) {
 }
 ```
 
-**After (v2.1.0):**
+**After (v2.1.1):**
 ```dart
 void showCustomAlert() {
   CustomQuickAlert.custom(
@@ -276,7 +276,7 @@ class AlertManager {
 }
 ```
 
-**After (v2.1.0):**
+**After (v2.1.1):**
 ```dart
 class AlertManager {
   static void showSuccess(String message) {
@@ -308,7 +308,7 @@ class MyBloc extends Bloc<MyEvent, MyState> {
 }
 ```
 
-**After (v2.1.0 with Bloc):**
+**After (v2.1.1 with Bloc):**
 ```dart
 class MyBloc extends Bloc<MyEvent, MyState> {
   MyBloc() : super(MyInitial()); // No context needed!
@@ -384,7 +384,7 @@ void main() {
 
 ## 📈 Benefits of Migration
 
-### ✅ Advantages of v2.1.0
+### ✅ Advantages of v2.1.1
 
 1. **Context-Free**: No more passing BuildContext around
 2. **Cleaner Code**: Simplified API calls
@@ -420,7 +420,7 @@ void showAlert() {
 
 Once you've completed these steps:
 
-1. ✅ Updated dependencies to v2.1.0
+1. ✅ Updated dependencies to v2.1.1
 2. ✅ Set up global navigator key
 3. ✅ Updated all API calls
 4. ✅ Updated parameter names

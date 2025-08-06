@@ -140,7 +140,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  custom_quick_alert: ^2.1.0
+  custom_quick_alert: ^2.1.1
 ```
 
 Install the package:
@@ -1170,7 +1170,7 @@ Version 2.0 introduces a context-free API that eliminates the need for `BuildCon
 **1. Update Dependencies**
 ```yaml
 dependencies:
-  custom_quick_alert: ^2.1.0  # Update version
+  custom_quick_alert: ^2.1.1  # Update version
 ```
 
 **2. Setup Navigator Key**

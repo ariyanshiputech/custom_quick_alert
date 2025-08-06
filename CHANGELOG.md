@@ -4,6 +4,14 @@ All notable changes to the custom_quick_alert package will be documented in this
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [2.1.1] - 2025-08-07 🚀
+### 📚 Documentation Enhancement
+- **Improved Navigation**: Enhanced table of contents structure for easier access to information
+- **Widget Integration Guide**: Added comprehensive examples for integrating alerts with forms, navigation, and state management
+- **Extensive Guides**: Created 19+ detailed guides in the documentation wiki covering various aspects of the package
+- **Professional Standards**: Continued to elevate documentation quality to enterprise-level standards
+- **Real-World Examples**: Added practical implementation scenarios for different industries
+- **Troubleshooting Guides**: Expanded problem-solving documentation for common issues
 ## [2.1.0] - 2025-08-06 🚀
  
 ### ✨ Major Improvements

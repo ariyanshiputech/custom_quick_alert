@@ -1,6 +1,6 @@
 # 💡 Real-World Examples
 
-This guide provides practical, real-world examples of using Custom Quick Alert v2.1.0 in various application scenarios.
+This guide provides practical, real-world examples of using Custom Quick Alert v2.1.1 in various application scenarios.
 
 ## 🔐 Authentication System
 
@@ -625,7 +625,7 @@ class AlertManager {
 }
 ```
 
-These real-world examples demonstrate how Custom Quick Alert v2.1.0 can be integrated into various application flows to provide excellent user experience and clear communication with users.
+These real-world examples demonstrate how Custom Quick Alert v2.1.1 can be integrated into various application flows to provide excellent user experience and clear communication with users.
 
 ---
 

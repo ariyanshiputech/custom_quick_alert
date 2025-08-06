@@ -712,7 +712,7 @@ class AlertCircuitBreaker {
 
 ```dart
 class AlertVersionManager {
-  static const String currentVersion = '2.1.0';
+  static const String currentVersion = '2.1.1';
   static const int minSupportedVersion = 200; // 2.0.0
 
   static bool isVersionSupported(String version) {
